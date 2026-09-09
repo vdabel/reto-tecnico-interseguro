@@ -31,8 +31,14 @@ services:
       - key: NODE_API_URL
         value: https://interseguro-api-node.onrender.com
 
-  # 3. Aplicación Web Frontend (Sitio Estático ultra-rápido en CDN de Render)
-  - type: static
+  # 3. Aplicación Web Frontend (Nginx en Docker)
+  - type: web
     name: interseguro-frontend
-    staticPublishPath: ./frontend
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
     plan: free
+    region: oregon
+    envVars:
+      - key: PORT
+        value: 80
