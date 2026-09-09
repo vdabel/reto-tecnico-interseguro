@@ -328,8 +328,16 @@
     };
 
     function getBaseApiUrl() {
+      // 1. Si viene por parámetro en la URL (?api=https://...)
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryApi = urlParams.get('api');
+      if (queryApi) return queryApi.replace(/\/$/, '');
+
+      // 2. Si se configuró en el campo de texto
       const customUrl = document.getElementById('apiEndpoint')?.value?.trim();
       if (customUrl) return customUrl.replace(/\/$/, '');
+
+      // 3. Fallback a localhost
       const host = window.location.hostname || 'localhost';
       return `http://${host}:3000`;
     }
@@ -516,8 +524,14 @@
     document.getElementById('processBtn').addEventListener('click', processMatrix);
     document.getElementById('refreshTokenBtn').addEventListener('click', fetchJwtToken);
 
-    // Inicializar token al cargar
+    // Inicializar al cargar
     window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryApi = urlParams.get('api');
+      if (queryApi) {
+        const input = document.getElementById('apiEndpoint');
+        if (input) input.value = queryApi;
+      }
       fetchJwtToken();
     });
   </script>
