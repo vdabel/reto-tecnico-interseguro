@@ -1,0 +1,72 @@
+services:
+  # Microservicio Node.js - Cálculo Estadístico y Análisis de Matrices
+  api-node:
+    build:
+      context: ./api-node
+      dockerfile: Dockerfile
+    container_name: interseguro-api-node
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - JWT_SECRET=${JWT_SECRET:-interseguro_super_secret_key_2024}
+      - NODE_ENV=production
+    networks:
+      - interseguro-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:4000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # Microservicio Go (Fiber) - Factorización QR con Gonum y Orquestación
+  api-go:
+    build:
+      context: ./api-go
+      dockerfile: Dockerfile
+    container_name: interseguro-api-go
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_API_URL=http://api-node:4000
+      - JWT_SECRET=${JWT_SECRET:-interseguro_super_secret_key_2024}
+    depends_on:
+      api-node:
+        condition: service_healthy
+    networks:
+      - interseguro-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # Aplicación Web Frontend (Nginx) - Interfaz de Usuario e Interacción
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: interseguro-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      api-go:
+        condition: service_healthy
+    networks:
+      - interseguro-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:80/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 3s
+
+networks:
+  interseguro-net:
+    driver: bridge
