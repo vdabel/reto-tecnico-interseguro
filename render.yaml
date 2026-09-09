@@ -29,16 +29,10 @@ services:
       - key: JWT_SECRET
         value: interseguro_super_secret_key_2024
       - key: NODE_API_URL
-        value: http://interseguro-api-node:4000
+        value: https://interseguro-api-node.onrender.com
 
-  # 3. Aplicación Web Frontend
-  - type: web
+  # 3. Aplicación Web Frontend (Sitio Estático ultra-rápido en CDN de Render)
+  - type: static
     name: interseguro-frontend
-    runtime: docker
-    dockerfilePath: ./frontend/Dockerfile
-    dockerContext: ./frontend
+    staticPublishPath: ./frontend
     plan: free
-    region: oregon
-    envVars:
-      - key: PORT
-        value: 80

@@ -333,11 +333,16 @@
       const queryApi = urlParams.get('api');
       if (queryApi) return queryApi.replace(/\/$/, '');
 
-      // 2. Si se configuró en el campo de texto
+      // 2. Si se configuró manualmente en el campo de texto
       const customUrl = document.getElementById('apiEndpoint')?.value?.trim();
-      if (customUrl) return customUrl.replace(/\/$/, '');
+      if (customUrl && customUrl !== 'http://localhost:3000') return customUrl.replace(/\/$/, '');
 
-      // 3. Fallback a localhost
+      // 3. Si corre en la nube (Render)
+      if (window.location.hostname.includes('onrender.com')) {
+        return 'https://interseguro-api-go.onrender.com';
+      }
+
+      // 4. Fallback a localhost
       const host = window.location.hostname || 'localhost';
       return `http://${host}:3000`;
     }
@@ -528,9 +533,11 @@
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const queryApi = urlParams.get('api');
+      const input = document.getElementById('apiEndpoint');
       if (queryApi) {
-        const input = document.getElementById('apiEndpoint');
         if (input) input.value = queryApi;
+      } else if (window.location.hostname.includes('onrender.com')) {
+        if (input) input.value = 'https://interseguro-api-go.onrender.com';
       }
       fetchJwtToken();
     });
