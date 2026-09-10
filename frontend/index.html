@@ -137,21 +137,6 @@
           <textarea id="matrixInput" rows="7" class="w-full bg-slate-950 font-mono text-sm text-sky-300 border border-slate-700 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition" placeholder="[[1, 2], [3, 4]]">[[12, -51, 4], [6, 167, -68], [-4, 24, -41]]</textarea>
         </div>
 
-        <!-- Configuración de URLs de API -->
-        <details id="advancedOptions" class="text-xs text-slate-400 cursor-pointer">
-          <summary class="hover:text-slate-200 transition font-medium">Opciones avanzadas (Endpoint & JWT)</summary>
-          <div class="mt-3 space-y-3 pt-3 border-t border-slate-800">
-            <div>
-              <label class="block mb-1 text-[11px] uppercase">URL API Go:</label>
-              <input type="text" id="apiEndpoint" value="http://localhost:3000" class="w-full bg-slate-950 text-xs px-2.5 py-1.5 rounded border border-slate-700 text-slate-300 focus:outline-none font-mono" placeholder="http://localhost:3000">
-              <span class="text-[10px] text-slate-500">Apunta al puerto 3000 donde corre la API en Go (Fiber).</span>
-            </div>
-            <div>
-              <label class="block mb-1 text-[11px] uppercase">Token JWT (Bearer):</label>
-              <input type="text" id="jwtTokenInput" value="" class="w-full bg-slate-950 text-xs px-2.5 py-1.5 rounded border border-slate-700 text-slate-300 focus:outline-none font-mono truncate">
-            </div>
-          </div>
-        </details>
 
         <!-- Botón de Ejecutar -->
         <button id="processBtn" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-white font-bold text-sm tracking-wide shadow-lg shadow-sky-500/25 transition transform active:scale-[0.98] flex items-center justify-center gap-2">
@@ -328,20 +313,6 @@
     };
 
     function getBaseApiUrl() {
-      // 1. Si viene por parámetro en la URL (?api=https://...)
-      const urlParams = new URLSearchParams(window.location.search);
-      const queryApi = urlParams.get('api');
-      if (queryApi) return queryApi.replace(/\/$/, '');
-
-      // 2. Si se configuró en el campo de texto
-      const customUrl = document.getElementById('apiEndpoint')?.value?.trim();
-      if (customUrl) return customUrl.replace(/\/$/, '');
-
-      // 3. Si se guardó previamente en el navegador
-      const saved = localStorage.getItem('interseguro_api_url');
-      if (saved) return saved.replace(/\/$/, '');
-
-      // 4. Fallback a localhost
       const host = window.location.hostname || 'localhost';
       return `http://${host}:3000`;
     }
@@ -379,18 +350,12 @@
         const data = await res.json();
         if (data.success && data.token) {
           currentToken = data.token;
-          document.getElementById('jwtTokenInput').value = currentToken;
           statusText.innerText = 'JWT Activo (24h)';
           return currentToken;
         }
       } catch (err) {
-        console.warn('Fallback al obtener token:', err);
-        statusText.innerText = 'Error al obtener JWT: ' + err.message;
-        const baseUrl = getBaseApiUrl();
-        if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
-          showAlert(`⚠️ No se pudo conectar a la API en <b>${baseUrl}</b>.<br>Abre <i>"Opciones avanzadas"</i> abajo y pega la URL de tu servicio <b>interseguro-api-go</b> generada por Render.`, true);
-          document.getElementById('advancedOptions')?.setAttribute('open', '');
-        }
+        console.warn('Error al obtener token:', err);
+        statusText.innerText = 'Error al obtener JWT';
       }
       return null;
     }
@@ -434,8 +399,7 @@
         return;
       }
 
-      const token = document.getElementById('jwtTokenInput').value.trim() || currentToken;
-      if (!token) {
+      if (!currentToken) {
         showAlert('No hay un token JWT disponible. Se intentará renovar...', true);
         await fetchJwtToken();
       }
@@ -451,13 +415,12 @@
 
       try {
         const baseUrl = getBaseApiUrl();
-        const activeToken = document.getElementById('jwtTokenInput').value.trim() || currentToken;
 
         const response = await fetch(`${baseUrl}/api/matrix/process`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${activeToken}`
+            'Authorization': `Bearer ${currentToken}`
           },
           body: JSON.stringify({ matrix })
         });
@@ -535,27 +498,6 @@
 
     // Inicializar al cargar
     window.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const queryApi = urlParams.get('api');
-      const savedApi = localStorage.getItem('interseguro_api_url');
-      const input = document.getElementById('apiEndpoint');
-
-      if (queryApi) {
-        if (input) input.value = queryApi;
-        localStorage.setItem('interseguro_api_url', queryApi);
-      } else if (savedApi) {
-        if (input) input.value = savedApi;
-      }
-
-      // Si el usuario edita la URL manualmente, guardarla y renovar token
-      input?.addEventListener('change', (e) => {
-        const val = e.target.value.trim();
-        if (val) {
-          localStorage.setItem('interseguro_api_url', val);
-          fetchJwtToken();
-        }
-      });
-
       fetchJwtToken();
     });
   </script>
