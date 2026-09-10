@@ -313,6 +313,11 @@
     };
 
     function getBaseApiUrl() {
+      // Si estamos en Hugging Face (puerto 7860 o dominio hf.space) o un proxy web estándar, usamos el mismo origin
+      if (window.location.port === '7860' || window.location.hostname.includes('hf.space') || window.location.port === '80' || window.location.port === '443') {
+        return window.location.origin;
+      }
+      // En entorno local de desarrollo (puerto 8080 de docker o apertura directa)
       const host = window.location.hostname || 'localhost';
       return `http://${host}:3000`;
     }
