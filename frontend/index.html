@@ -138,7 +138,7 @@
         </div>
 
         <!-- Configuración de URLs de API -->
-        <details class="text-xs text-slate-400 cursor-pointer">
+        <details id="advancedOptions" class="text-xs text-slate-400 cursor-pointer">
           <summary class="hover:text-slate-200 transition font-medium">Opciones avanzadas (Endpoint & JWT)</summary>
           <div class="mt-3 space-y-3 pt-3 border-t border-slate-800">
             <div>
@@ -333,14 +333,13 @@
       const queryApi = urlParams.get('api');
       if (queryApi) return queryApi.replace(/\/$/, '');
 
-      // 2. Si se configuró manualmente en el campo de texto
+      // 2. Si se configuró en el campo de texto
       const customUrl = document.getElementById('apiEndpoint')?.value?.trim();
-      if (customUrl && customUrl !== 'http://localhost:3000') return customUrl.replace(/\/$/, '');
+      if (customUrl) return customUrl.replace(/\/$/, '');
 
-      // 3. Si corre en la nube (Render)
-      if (window.location.hostname.includes('onrender.com')) {
-        return 'https://interseguro-api-go.onrender.com';
-      }
+      // 3. Si se guardó previamente en el navegador
+      const saved = localStorage.getItem('interseguro_api_url');
+      if (saved) return saved.replace(/\/$/, '');
 
       // 4. Fallback a localhost
       const host = window.location.hostname || 'localhost';
@@ -387,6 +386,11 @@
       } catch (err) {
         console.warn('Fallback al obtener token:', err);
         statusText.innerText = 'Error al obtener JWT: ' + err.message;
+        const baseUrl = getBaseApiUrl();
+        if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
+          showAlert(`⚠️ No se pudo conectar a la API en <b>${baseUrl}</b>.<br>Abre <i>"Opciones avanzadas"</i> abajo y pega la URL de tu servicio <b>interseguro-api-go</b> generada por Render.`, true);
+          document.getElementById('advancedOptions')?.setAttribute('open', '');
+        }
       }
       return null;
     }
@@ -533,12 +537,25 @@
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const queryApi = urlParams.get('api');
+      const savedApi = localStorage.getItem('interseguro_api_url');
       const input = document.getElementById('apiEndpoint');
+
       if (queryApi) {
         if (input) input.value = queryApi;
-      } else if (window.location.hostname.includes('onrender.com')) {
-        if (input) input.value = 'https://interseguro-api-go.onrender.com';
+        localStorage.setItem('interseguro_api_url', queryApi);
+      } else if (savedApi) {
+        if (input) input.value = savedApi;
       }
+
+      // Si el usuario edita la URL manualmente, guardarla y renovar token
+      input?.addEventListener('change', (e) => {
+        const val = e.target.value.trim();
+        if (val) {
+          localStorage.setItem('interseguro_api_url', val);
+          fetchJwtToken();
+        }
+      });
+
       fetchJwtToken();
     });
   </script>

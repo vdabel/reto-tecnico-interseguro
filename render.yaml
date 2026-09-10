@@ -29,7 +29,7 @@ services:
       - key: JWT_SECRET
         value: interseguro_super_secret_key_2024
       - key: NODE_API_URL
-        value: https://interseguro-api-node.onrender.com
+        value: http://interseguro-api-node:4000
 
   # 3. Aplicación Web Frontend (Nginx en Docker)
   - type: web
