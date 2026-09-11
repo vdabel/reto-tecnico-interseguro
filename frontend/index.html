@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Interseguro - Challenge Microservicios Matrix & QR</title>
+  <title>Interseguro Reto Técnico</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -33,6 +36,7 @@
     .matrix-bracket {
       position: relative;
     }
+
     .matrix-bracket::before {
       content: "";
       position: absolute;
@@ -45,6 +49,7 @@
       border-bottom: 2.5px solid #0072CE;
       border-radius: 4px 0 0 4px;
     }
+
     .matrix-bracket::after {
       content: "";
       position: absolute;
@@ -59,20 +64,27 @@
     }
   </style>
 </head>
+
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-sky-500 selection:text-white">
 
   <!-- Encabezado y Navbar -->
   <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-3">
-        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-sky-500/20">
+        <div
+          class="h-10 w-10 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-sky-500/20">
           <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+            </path>
           </svg>
         </div>
         <div>
           <h1 class="text-xl font-extrabold tracking-tight text-white flex items-center gap-2">
-            Interseguro <span class="text-xs px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/30">Desafío Técnico</span>
+            Interseguro <span
+              class="text-xs px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/30">Desafío
+              Técnico</span>
           </h1>
           <p class="text-xs text-slate-400">Microservicios: Go (Fiber + Gonum QR) ➔ Node.js (Express + Estadísticas)</p>
         </div>
@@ -84,9 +96,12 @@
           <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
           <span class="text-slate-300 font-mono" id="authStatusText">Token JWT Listo</span>
         </div>
-        <button id="refreshTokenBtn" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white transition flex items-center gap-1.5 shadow-sm shadow-sky-600/30">
+        <button id="refreshTokenBtn"
+          class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white transition flex items-center gap-1.5 shadow-sm shadow-sky-600/30">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+            </path>
           </svg>
           Renovar Token
         </button>
@@ -96,16 +111,18 @@
 
   <!-- Contenido Principal -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-    
+
     <!-- Fila Superior: Controles de Matriz -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      
+
       <!-- Panel de Entrada de Datos -->
       <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-5">
         <div class="flex items-center justify-between">
           <h2 class="text-lg font-bold text-white flex items-center gap-2">
             <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+              </path>
             </svg>
             Matriz de Entrada
           </h2>
@@ -114,18 +131,23 @@
 
         <!-- Botones de Ejemplos Rápidos -->
         <div>
-          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Cargar Plantilla:</label>
+          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Cargar
+            Plantilla:</label>
           <div class="grid grid-cols-2 gap-2">
-            <button onclick="loadPreset('classic3x3')" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition text-left">
+            <button onclick="loadPreset('classic3x3')"
+              class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition text-left">
               📐 3x3 Clásica QR
             </button>
-            <button onclick="loadPreset('rect4x3')" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition text-left">
+            <button onclick="loadPreset('rect4x3')"
+              class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition text-left">
               📏 4x3 Rectangular
             </button>
-            <button onclick="loadPreset('diagonal')" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition text-left">
+            <button onclick="loadPreset('diagonal')"
+              class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition text-left">
               ⭐ 3x3 Diagonal
             </button>
-            <button onclick="loadPreset('identity')" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition text-left">
+            <button onclick="loadPreset('identity')"
+              class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition text-left">
               🔘 3x3 Identidad
             </button>
           </div>
@@ -133,13 +155,17 @@
 
         <!-- Textarea de Matriz JSON -->
         <div>
-          <label for="matrixInput" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Definición JSON:</label>
-          <textarea id="matrixInput" rows="7" class="w-full bg-slate-950 font-mono text-sm text-sky-300 border border-slate-700 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition" placeholder="[[1, 2], [3, 4]]">[[12, -51, 4], [6, 167, -68], [-4, 24, -41]]</textarea>
+          <label for="matrixInput"
+            class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Definición JSON:</label>
+          <textarea id="matrixInput" rows="7"
+            class="w-full bg-slate-950 font-mono text-sm text-sky-300 border border-slate-700 rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition"
+            placeholder="[[1, 2], [3, 4]]">[[12, -51, 4], [6, 167, -68], [-4, 24, -41]]</textarea>
         </div>
 
 
         <!-- Botón de Ejecutar -->
-        <button id="processBtn" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-white font-bold text-sm tracking-wide shadow-lg shadow-sky-500/25 transition transform active:scale-[0.98] flex items-center justify-center gap-2">
+        <button id="processBtn"
+          class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-white font-bold text-sm tracking-wide shadow-lg shadow-sky-500/25 transition transform active:scale-[0.98] flex items-center justify-center gap-2">
           <svg id="processIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
           </svg>
@@ -150,19 +176,24 @@
       </div>
 
       <!-- Métricas Consolidadas (Node.js API Results) -->
-      <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+      <div
+        class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-800">
             <div>
               <h2 class="text-lg font-bold text-white flex items-center gap-2">
                 <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                  </path>
                 </svg>
                 Estadísticas Calculadas (Microservicio Node.js)
               </h2>
-              <p class="text-xs text-slate-400 mt-0.5">Valores analizados a través del cluster de matrices procesadas</p>
+              <p class="text-xs text-slate-400 mt-0.5">Valores analizados a través del cluster de matrices procesadas
+              </p>
             </div>
-            <div id="diagonalBadge" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-400 border border-slate-700">
+            <div id="diagonalBadge"
+              class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-400 border border-slate-700">
               <span>Diagonal: Pendiente</span>
             </div>
           </div>
@@ -197,24 +228,30 @@
           <!-- Detalle de Matriz Diagonal -->
           <div class="mt-6 p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <div id="diagonalIndicatorCircle" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400">
+              <div id="diagonalIndicatorCircle"
+                class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                  </path>
                 </svg>
               </div>
               <div>
                 <h4 class="text-sm font-semibold text-white">Verificación de Matriz Diagonal</h4>
-                <p id="diagonalDetailText" class="text-xs text-slate-400">Ejecuta el procesamiento para verificar si alguna de las matrices cumple con la condición diagonal.</p>
+                <p id="diagonalDetailText" class="text-xs text-slate-400">Ejecuta el procesamiento para verificar si
+                  alguna de las matrices cumple con la condición diagonal.</p>
               </div>
             </div>
-            <div id="diagonalFlagBadge" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 font-mono font-bold">
+            <div id="diagonalFlagBadge"
+              class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 font-mono font-bold">
               SIN DATOS
             </div>
           </div>
         </div>
 
         <!-- Mini resumen de arquitectura -->
-        <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-500 font-mono">
+        <div
+          class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-500 font-mono">
           <span>Go Fiber (Gonum QR) ➔ HTTP POST ➔ Express.js</span>
           <span>Status: <span id="pipelineStatus" class="text-slate-400">Inactivo</span></span>
         </div>
@@ -226,7 +263,9 @@
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-bold text-white flex items-center gap-2">
           <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z">
+            </path>
           </svg>
           Representación de Matrices y Factorización
         </h2>
@@ -240,7 +279,8 @@
             <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">1. Original (A)</span>
             <span id="dimOriginal" class="text-[10px] text-slate-400 font-mono">-</span>
           </div>
-          <div id="renderOriginal" class="min-h-[120px] flex items-center justify-center text-xs text-slate-600 font-mono overflow-x-auto p-2">
+          <div id="renderOriginal"
+            class="min-h-[120px] flex items-center justify-center text-xs text-slate-600 font-mono overflow-x-auto p-2">
             No hay datos cargados
           </div>
         </div>
@@ -251,7 +291,8 @@
             <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">2. Ortogonal (Q)</span>
             <span id="dimQ" class="text-[10px] text-slate-400 font-mono">-</span>
           </div>
-          <div id="renderQ" class="min-h-[120px] flex items-center justify-center text-xs text-slate-600 font-mono overflow-x-auto p-2">
+          <div id="renderQ"
+            class="min-h-[120px] flex items-center justify-center text-xs text-slate-600 font-mono overflow-x-auto p-2">
             Esperando QR...
           </div>
         </div>
@@ -262,7 +303,8 @@
             <span class="text-xs font-bold text-indigo-400 uppercase tracking-wider">3. Triangular Sup (R)</span>
             <span id="dimR" class="text-[10px] text-slate-400 font-mono">-</span>
           </div>
-          <div id="renderR" class="min-h-[120px] flex items-center justify-center text-xs text-slate-600 font-mono overflow-x-auto p-2">
+          <div id="renderR"
+            class="min-h-[120px] flex items-center justify-center text-xs text-slate-600 font-mono overflow-x-auto p-2">
             Esperando QR...
           </div>
         </div>
@@ -273,7 +315,8 @@
             <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">4. Rotada 90&deg;</span>
             <span id="dimRotated" class="text-[10px] text-slate-400 font-mono">-</span>
           </div>
-          <div id="renderRotated" class="min-h-[120px] flex items-center justify-center text-xs text-slate-600 font-mono overflow-x-auto p-2">
+          <div id="renderRotated"
+            class="min-h-[120px] flex items-center justify-center text-xs text-slate-600 font-mono overflow-x-auto p-2">
             Esperando rotación...
           </div>
         </div>
@@ -283,23 +326,26 @@
     <!-- Pestaña de Respuesta Raw JSON para Auditoría Técnica -->
     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
       <details class="group">
-        <summary class="flex items-center justify-between text-sm font-semibold text-slate-300 cursor-pointer hover:text-white transition">
+        <summary
+          class="flex items-center justify-between text-sm font-semibold text-slate-300 cursor-pointer hover:text-white transition">
           <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 text-slate-400 group-open:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-slate-400 group-open:rotate-90 transition-transform" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
             Respuesta Cruda Consolidada de la API (JSON)
           </span>
           <span class="text-xs font-normal text-slate-500">Auditoría Técnica REST / JWT</span>
         </summary>
-        <pre id="rawJsonResponse" class="mt-4 p-4 rounded-xl bg-slate-950 text-xs font-mono text-emerald-400 overflow-x-auto border border-slate-800 max-h-96">// La respuesta completa de la API aparecerá aquí después del envío...</pre>
+        <pre id="rawJsonResponse"
+          class="mt-4 p-4 rounded-xl bg-slate-950 text-xs font-mono text-emerald-400 overflow-x-auto border border-slate-800 max-h-96">// La respuesta completa de la API aparecerá aquí después del envío...</pre>
       </details>
     </div>
 
   </main>
 
   <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
-    Interseguro Coding Challenge &bull; Arquitectura de Microservicios con Go, Node.js, JWT y Docker
+    Reto Técnico &bull; Arquitectura de Microservicios con Go, Node.js y Docker
   </footer>
 
   <script>
@@ -507,4 +553,5 @@
     });
   </script>
 </body>
+
 </html>
