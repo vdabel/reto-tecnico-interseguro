@@ -198,7 +198,7 @@ Este repositorio contiene mi solución al reto técnico. El proyecto está estru
 
 ## Cómo deplegarlo
 
-### Opción A: Con Docker
+### Con Docker
 
 **Ejecuta en la raíz del proyecto:**
 
@@ -212,25 +212,6 @@ Una vez levantado, ingresa desde tu navegador a: **[http://localhost:8080](http:
 ```bash
 docker compose down
 ```
-
----
-
-### Opción B: Ejecución Local Directa (Sin Docker)
-
-* **Abriendo 3 terminales manualmente:**
-  ```powershell
-  # Terminal 1 - API Node.js (:4000)
-  cd api-node
-  node index.js
-
-  # Terminal 2 - API Go (:3000)
-  cd api-go
-  go run main.go
-
-  # Terminal 3 - Frontend Web (:8080)
-  cd frontend
-  python -m http.server 8080
-  ```
 
 ---
 
