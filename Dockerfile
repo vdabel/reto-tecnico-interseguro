@@ -38,7 +38,7 @@ COPY nginx-cloud.conf /etc/nginx/http.d/default.conf
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
-# Hugging Face Spaces enruta el tráfico al puerto 7860 por defecto
-EXPOSE 7860
+# Puerto web expuesto
+EXPOSE 8080
 
 CMD ["/app/entrypoint.sh"]
